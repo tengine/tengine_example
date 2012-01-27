@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'rubygems'
 require 'bundler'
 begin
@@ -16,9 +14,9 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "tengine_example"
   gem.homepage = "http://github.com/shyouhei/tengine_example"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.license = "LGPL or MPL"
+  gem.summary = "Tengine framework examples and deployer"
+  gem.description = "Tengine framework examples and deployer"
   gem.email = "shyouhei@ruby-lang.org"
   gem.authors = ["Urabe, Shyouhei"]
   # dependencies defined in Gemfile
@@ -40,3 +38,14 @@ task :default => :spec
 
 require 'yard'
 YARD::Rake::YardocTask.new
+
+# 
+# Local Variables:
+# mode: ruby
+# coding: utf-8-unix
+# indent-tabs-mode: nil
+# tab-width: 4
+# ruby-indent-level: 2
+# fill-column: 79
+# default-justification: full
+# End:
