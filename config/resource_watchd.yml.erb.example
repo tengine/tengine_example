@@ -1,0 +1,59 @@
+process:
+  daemon:  true
+  pid_dir: './tmp/resourcew_pids'
+
+heartbeat:
+  resourcew:
+    interval: 30
+
+db:
+  host: localhost
+  database: tengine_production
+  read_secondary: false
+  max_retries_on_connection_failure: 128
+
+event_queue:
+  connection:
+    host: localhost
+    port: 5672
+  exchange:
+    name: tengine_event_exchange
+    type: direct
+    durable: true
+  queue:
+    name: tengine_event_queue
+    durable: true
+
+log_common:
+  output:
+  rotation: daily
+  rotation_size: 7
+  level: 'info'
+
+application_log:
+  output: ./log/<%= File.basename($0) %>_<%= `hostname`.strip %>.log
+  rotation:
+  rotation_size:
+  level:
+
+process_stdout_log:
+  output: ./log/<%= File.basename($0) %>_out_<%= `hostname`.strip %>.log
+  rotation:
+  rotation_size:
+  level:
+
+process_stderr_log:
+  output: ./log/<%= File.basename($0) %>_err_<%= `hostname`.strip %>.log
+  rotation:
+  rotation_size:
+  level:
+
+# Local Variables:
+# mode: yaml
+# coding: utf-8-unix
+# indent-tabs-mode: nil
+# tab-width: 4
+# ruby-indent-level: 2
+# fill-column: 79
+# default-justification: full
+# End:

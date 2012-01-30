@@ -1,0 +1,65 @@
+process:
+  daemon: true
+  pid_dir: './tmp/tengined_pids'
+
+tengined:
+  activation_timeout: 300,
+  confirmation_threshold: info
+  load_path: './app/'
+  status_dir: './tmp/tengined_status'
+  activation_dir: './tmp/tengined_activations'
+
+heartbeat:
+  core:
+    interval: 30
+
+db:
+  host: localhost
+  database: tengine_production
+  read_secondary: false
+  max_retries_on_connection_failure: 128
+
+event_queue:
+  connection:
+    host: localhost
+    port: 5672
+  exchange:
+    name: tengine_event_exchange
+    type: direct
+  queue:
+    name: tengine_event_queue
+    durable: true
+
+log_common:
+  output:                                                                 # file path or "STDOUT" / "STDERR"
+  rotation: daily                                                         # rotation file count or daily,weekly,monthly. default: 3
+  rotation_size: 7                                                        # number of max log file size. default: 1048576 (10MB)
+  level: 'info'                                                           # debug/info/warn/error/fatal. default: info
+
+application_log:
+  output: ./log/<%= File.basename($0) %>_<%= `hostname`.strip %>.log      # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/application.log" else "STDOUT"
+  rotation:                                                               # rotation file count or daily,weekly,monthly. default: value of --log-common-rotation
+  rotation_size:                                                          # number of max log file size. default: value of --log-common-rotation-size
+  level:                                                                  # debug/info/warn/error/fatal. default: value of --log-common-level
+
+process_stdout_log:
+  output: ./log/<%= File.basename($0) %>_out_<%= `hostname`.strip %>.log  # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/#{$PROGRAM_NAME}_#{Process.pid}_stdout.log" else "STDOUT"
+  rotation:                                                               # rotation file count or daily,weekly,monthly. default: value of --log-common-rotation
+  rotation_size:                                                          # number of max log file size. default: value of --log-common-rotation-size
+  level:                                                                  # debug/info/warn/error/fatal. default: value of --log-common-level
+
+process_stderr_log:
+  output: ./log/<%= File.basename($0) %>_err_<%= `hostname`.strip %>.log  # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/#{$PROGRAM_NAME}_#{Process.pid}_stderr.log" else "STDERR"
+  rotation:                                                               # rotation file count or daily,weekly,monthly. default: value of --log-common-rotation
+  rotation_size:                                                          # number of max log file size. default: value of --log-common-rotation-size
+  level:                                                                  # debug/info/warn/error/fatal. default: value of --log-common-level
+
+# Local Variables:
+# mode: yaml
+# coding: utf-8-unix
+# indent-tabs-mode: nil
+# tab-width: 4
+# ruby-indent-level: 2
+# fill-column: 79
+# default-justification: full
+# End:
