@@ -1,13 +1,13 @@
 process:
   daemon: true
-  pid_dir: './tmp/tengined_pids'
+  pid_dir: /var/lib/tengine_example/current/tmp/pids
 
 tengined:
   activation_timeout: 300,
   confirmation_threshold: info
-  load_path: './app/'
-  status_dir: './tmp/tengined_status'
-  activation_dir: './tmp/tengined_activations'
+  load_path: /var/lib/tengine_example/current/app/
+  status_dir: /var/lib/tengine_example/current/tmp/tengined_status
+  activation_dir: /var/lib/tengine_example/current/tmp/tengined_activations
 
 heartbeat:
   core:
@@ -37,19 +37,19 @@ log_common:
   level: 'info'                                                           # debug/info/warn/error/fatal. default: info
 
 application_log:
-  output: ./log/<%= File.basename($0) %>_<%= `hostname`.strip %>.log      # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/application.log" else "STDOUT"
+  output: /var/lib/tengine_example/shared/log/<%= File.basename($0) %>_<%= `hostname`.strip %>.log      # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/application.log" else "STDOUT"
   rotation:                                                               # rotation file count or daily,weekly,monthly. default: value of --log-common-rotation
   rotation_size:                                                          # number of max log file size. default: value of --log-common-rotation-size
   level:                                                                  # debug/info/warn/error/fatal. default: value of --log-common-level
 
 process_stdout_log:
-  output: ./log/<%= File.basename($0) %>_out_<%= `hostname`.strip %>.log  # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/#{$PROGRAM_NAME}_#{Process.pid}_stdout.log" else "STDOUT"
+  output: /var/lib/tengine_example/shared/log/<%= File.basename($0) %>_out_<%= `hostname`.strip %>.log  # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/#{$PROGRAM_NAME}_#{Process.pid}_stdout.log" else "STDOUT"
   rotation:                                                               # rotation file count or daily,weekly,monthly. default: value of --log-common-rotation
   rotation_size:                                                          # number of max log file size. default: value of --log-common-rotation-size
   level:                                                                  # debug/info/warn/error/fatal. default: value of --log-common-level
 
 process_stderr_log:
-  output: ./log/<%= File.basename($0) %>_err_<%= `hostname`.strip %>.log  # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/#{$PROGRAM_NAME}_#{Process.pid}_stderr.log" else "STDERR"
+  output: /var/lib/tengine_example/shared/log/<%= File.basename($0) %>_err_<%= `hostname`.strip %>.log  # file path or "STDOUT" / "STDERR". default: if daemon process then "./log/#{$PROGRAM_NAME}_#{Process.pid}_stderr.log" else "STDERR"
   rotation:                                                               # rotation file count or daily,weekly,monthly. default: value of --log-common-rotation
   rotation_size:                                                          # number of max log file size. default: value of --log-common-rotation-size
   level:                                                                  # debug/info/warn/error/fatal. default: value of --log-common-level

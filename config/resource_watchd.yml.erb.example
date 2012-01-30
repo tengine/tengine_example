@@ -1,6 +1,6 @@
 process:
   daemon:  true
-  pid_dir: './tmp/resourcew_pids'
+  pid_dir: './tmp/pids'
 
 heartbeat:
   resourcew:

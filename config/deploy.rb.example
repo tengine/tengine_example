@@ -76,6 +76,11 @@ namespace :deploy do
   end
   after 'deploy:update_code', 'deploy:mkconfig'
 
+  task :mkshared do
+    run "mkdir -p #{shared_path}/log"
+  end
+  after 'deploy:setup', 'deploy:mkshared'
+
   if exists?(:rvm_bin_path)
     set :sudo_rvm_bundle, "#{default_shell} rvmsudo -u #{daemon_user} bundle exec"
   else

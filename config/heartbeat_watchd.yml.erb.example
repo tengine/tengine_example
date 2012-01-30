@@ -1,6 +1,6 @@
 process:
   daemon:  true
-  pid_dir: './tmp/hbw_pids'
+  pid_dir: /var/lib/tengine_example/current/tmp/pids
 
 heartbeat:
   hbw:
@@ -31,19 +31,19 @@ log_common:
   level: 'info'
 
 application_log:
-  output: ./log/<%= File.basename($0) %>_<%= `hostname`.strip %>.log
+  output: /var/lib/tengine_example/shared/log/<%= File.basename($0) %>_<%= `hostname`.strip %>.log
   rotation:
   rotation_size:
   level:
 
 process_stdout_log:
-  output: ./log/<%= File.basename($0) %>_out_<%= `hostname`.strip %>.log
+  output: /var/lib/tengine_example/shared/log/<%= File.basename($0) %>_out_<%= `hostname`.strip %>.log
   rotation:
   rotation_size:
   level:
 
 process_stderr_log:
-  output: ./log/<%= File.basename($0) %>_err_<%= `hostname`.strip %>.log
+  output: /var/lib/tengine_example/shared/log/<%= File.basename($0) %>_err_<%= `hostname`.strip %>.log
   rotation:
   rotation_size:
   level:
