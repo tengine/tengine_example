@@ -1,0 +1,115 @@
+# -*- coding: utf-8 -*-
+
+server 'localhost', :tengined, :heartbeat_watchd, :resource_wwatchd, :atd
+set  :user              , 'shyouhei'
+set  :daemon_user       , 'shyouhei' # 'tengined'
+set  :application       , 'tengine_example'
+set  :keep_releases     , 3
+set  :scm               , :none #:git
+set  :repository        , '/Users/shyouhei/data/src/tengine/tengine_example' # 'git://github.com/shyouhei/tengine_example.git'
+set  :branch            , 'master'
+set  :git_shallow_clone , 1
+set  :scm_verbose       , true
+set  :copy_cache        , true
+set  :copy_strategy     , :export
+set  :copy_exclude      , %w'.git'
+set  :copy_compression  , :zip
+set  :deploy_to         , '/var/lib/tengine_example'
+set  :bundle_dir        , './vendor/bundle'
+set  :bundle_without    , [:development]
+set  :rvm_ruby_string   , 'ruby-1.9.2-p290@tengine_example'
+set  :rvm_type          , :user
+
+
+default_run_options[:pty] = true
+default_environment['PATH'] = '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin'
+
+namespace :deploy do
+
+  task :chown_deploy_path do
+    run "#{sudo} chown -R #{daemon_user} #{deploy_to}"
+  end
+  after "deploy:setup", "deploy:chown_deploy_path"
+  before "deploy:start", "deploy:chown_deploy_path"
+
+  set :daemons, [
+    :tengined,
+    :heartbeat_watchd,
+    :resource_watchd,
+    :atd
+  ]
+  set :config_files, {
+    tengined:         'tengined.yml.erb',
+    atd:              'atd.yml.erb',
+    heartbeat_watchd: 'heartbeat_watchd.yml.erb',
+    resource_watchd:  'resource_watchd.yml.erb',
+  }
+  set :binnames, {
+    tengined:         'tengined',
+    atd:              'tengine_atd',
+    heartbeat_watchd: 'tengine_heartbeat_watchd',
+    resource_watchd:  'tengine_resource_watchd',
+  }
+
+  task :start do
+    on_rollback do
+      force_stop
+      abort "=== could not start daemon process. ==="
+    end
+    daemons.each {|i| send(i).start }
+  end
+
+  task :stop do
+    daemons.each {|i| send(i).stop }
+  end
+
+  task :force_stop do
+    daemons.each {|i| send(i).force_stop }
+  end
+
+  task :mkconfig do
+    extend Capistrano::Configuration::Actions::FileTransfer
+    m = Capistrano::Configuration::Actions::FileTransfer.instance_method(:upload).bind(self)
+    config_files.values.uniq.each do |fn|
+      m.call "config/#{fn}", "#{release_path}/config/#{fn}"
+    end
+  end
+  after 'deploy:update_code', 'deploy:mkconfig'
+
+  if exists?(:rvm_bin_path)
+    set :sudo_rvm_bundle, "#{default_shell} rvmsudo -u #{daemon_user} bundle exec"
+  else
+    set :sudo_rvm_bundle, "sudo -u #{daemon_user} bundle exec"
+  end
+
+  [:tengined, :heartbeat_watchd, :resource_watchd, :atd].each do |daemon|
+    namespace daemon do
+      before "deploy:#{daemon}:start", "deploy:chown_deploy_path"
+      task :start, :roles => daemon do
+        on_rollback do
+          force_stop
+          abort "=== could not start tengine_atd process. ==="
+        end
+        run "cd #{current_path} && " <<
+          "#{sudo_rvm_bundle} #{binnames[daemon]} -k start -f #{current_path}/config/#{config_files[daemon]}"
+      end
+      %w(stop force_stop).each do |command|
+        task command, :roles => daemon do
+          run "cd #{current_path} && " <<
+            "#{sudo_rvm_bunlde} #{binnames[daemon]} -k #{command} -f #{current_path}/config/#{config_files[:daemon]}"
+        end
+      end
+    end
+  end
+end
+
+# 
+# Local Variables:
+# mode: ruby
+# coding: utf-8-unix
+# indent-tabs-mode: nil
+# tab-width: 4
+# ruby-indent-level: 2
+# fill-column: 79
+# default-justification: full
+# End:
