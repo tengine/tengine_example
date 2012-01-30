@@ -39,6 +39,27 @@ task :default => :spec
 require 'yard'
 YARD::Rake::YardocTask.new
 
+Rake::Task[:console].clear_actions
+
+task :console, [:config] do |c, argh|
+  require 'bundler/setup'
+  require 'irb'
+  require 'mongoid'
+  require 'amqp'
+  require 'tengine_job'
+  require 'tengine_resource'
+
+  config = Tengine::Core::Config::Core.parse argh[:config] || 'config/tengined.yml.erb'
+  config.setup_loggers
+
+  Mongoid.config.from_hash config[:db]
+  Mongoid.config.option :persist_in_safe_mode, :default => true
+  Mongoid.logger = AMQP::Session.logger = Tengine.logger
+
+  ARGV.clear
+  IRB.start
+end
+
 # 
 # Local Variables:
 # mode: ruby
