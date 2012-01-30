@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-server 'localhost', :tengined, :heartbeat_watchd, :resource_wwatchd, :atd
+server 'localhost', :tengined, :heartbeat_watchd, :resource_watchd, :atd
 set  :user              , 'shyouhei'
 set  :daemon_user       , 'shyouhei' # 'tengined'
 set  :application       , 'tengine_example'
@@ -84,19 +84,16 @@ namespace :deploy do
 
   [:tengined, :heartbeat_watchd, :resource_watchd, :atd].each do |daemon|
     namespace daemon do
-      before "deploy:#{daemon}:start", "deploy:chown_deploy_path"
-      task :start, :roles => daemon do
+      task :start, roles: daemon do
         on_rollback do
           force_stop
           abort "=== could not start tengine_atd process. ==="
         end
-        run "cd #{current_path} && " <<
-          "#{sudo_rvm_bundle} #{binnames[daemon]} -k start -f #{current_path}/config/#{config_files[daemon]}"
+        run "cd #{current_path} && #{sudo_rvm_bundle} #{binnames[daemon]} -k start -f #{current_path}/config/#{config_files[daemon]}"
       end
       %w(stop force_stop).each do |command|
-        task command, :roles => daemon do
-          run "cd #{current_path} && " <<
-            "#{sudo_rvm_bunlde} #{binnames[daemon]} -k #{command} -f #{current_path}/config/#{config_files[:daemon]}"
+        task command, roles: daemon do
+          run "cd #{current_path} && #{sudo_rvm_bundle} #{binnames[daemon]} -k #{command} -f #{current_path}/config/#{config_files[daemon]}"
         end
       end
     end
