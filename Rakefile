@@ -9,7 +9,11 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
+begin
+  require 'jeweler'
+rescue LoadError
+  # nothing
+else
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "tengine_example"
@@ -40,6 +44,7 @@ require 'yard'
 YARD::Rake::YardocTask.new
 
 Rake::Task[:console].clear_actions # Delete jeweler's "rake console"
+end
 
 task :console, [:config] do |c, argh|
   require 'bundler/setup'
