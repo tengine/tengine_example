@@ -39,7 +39,7 @@ task :default => :spec
 require 'yard'
 YARD::Rake::YardocTask.new
 
-Rake::Task[:console].clear_actions
+Rake::Task[:console].clear_actions # Delete jeweler's "rake console"
 
 task :console, [:config] do |c, argh|
   require 'bundler/setup'
@@ -58,6 +58,35 @@ task :console, [:config] do |c, argh|
 
   ARGV.clear
   IRB.start
+end
+
+namespace :daemons do
+  daemons = {
+    tengined: %w'tengined tengined.yml.erb',
+    heartbeat_watchd: %w'tengine_heartbeat_watchd heartbeat_watchd.yml.erb',
+    resource_watchd: %w'tengine_resource_watchd resource_watchd.yml.erb',
+    atd: %w'tengine_atd atd.yml.erb',
+  }
+
+  daemons.each_pair do |x, (y, z)|
+    namespace x do
+      %w'test load start enable stop force-stop status activate'.each do |t|
+        desc "tell #{x} to process request of: #{t}"
+        task t.intern do
+          sh "bundle exec #{y} -k #{t} -f #{Dir.getwd}/config/#{z}"
+        end
+      end
+    end
+  end
+
+  %w'start stop force-stop status'.each do |t|
+    desc "tell all daemons to process request of: #{t}"
+    task t.intern do
+      daemons.each_pair do |x, (y, z)|
+        sh "bundle exec #{y} -k #{t} -f #{Dir.getwd}/config/#{z}"
+      end
+    end
+  end
 end
 
 # 
