@@ -94,6 +94,11 @@ namespace :daemons do
   end
 end
 
+desc "sucks all pending events from the queue (for debug)"
+task :sucks do
+  sh "bundle exec tengine_event_sucks"
+end
+
 # 
 # Local Variables:
 # mode: ruby
