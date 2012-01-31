@@ -65,6 +65,11 @@ task :console, [:config] do |c, argh|
   IRB.start
 end
 
+desc "sucks all pending events from the queue (for debug)"
+task :sucks do
+  sh "bundle exec tengine_event_sucks"
+end
+
 namespace :daemons do
   daemons = {
     tengined: %w'tengined tengined.yml.erb',
@@ -76,7 +81,6 @@ namespace :daemons do
   daemons.each_pair do |x, (y, z)|
     namespace x do
       %w'test load start enable stop force-stop status activate'.each do |t|
-        desc "tell #{x} to process request of: #{t}"
         task t.intern do
           sh "bundle exec #{y} -k #{t} -f #{Dir.getwd}/config/#{z}"
         end
@@ -86,17 +90,8 @@ namespace :daemons do
 
   %w'start stop force-stop status'.each do |t|
     desc "tell all daemons to process request of: #{t}"
-    task t.intern do
-      daemons.each_pair do |x, (y, z)|
-        sh "bundle exec #{y} -k #{t} -f #{Dir.getwd}/config/#{z}"
-      end
-    end
+    task t => daemons.map {|(k, v)| "#{k}:#{t}" }
   end
-end
-
-desc "sucks all pending events from the queue (for debug)"
-task :sucks do
-  sh "bundle exec tengine_event_sucks"
 end
 
 # 
