@@ -43,6 +43,7 @@ namespace :deploy do
 
   task :mkshared do
     run "mkdir -p #{shared_path}/log"
+    run "mkdir -p #{shared_path}/tmp"
   end
   after 'deploy:setup', 'deploy:mkshared'
 

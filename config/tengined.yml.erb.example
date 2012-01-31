@@ -1,6 +1,6 @@
 process:
   daemon: true
-  pid_dir: /var/lib/tengine_example/current/tmp/pids
+  pid_dir: /var/lib/tengine_example/shared/tmp/pids
 
 tengined:
   activation_timeout: 300,
