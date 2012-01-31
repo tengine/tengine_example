@@ -56,6 +56,7 @@ task :console, [:config] do |c, argh|
 
   config = Tengine::Core::Config::Core.parse argh[:config] || 'config/tengined.yml.erb'
   config.setup_loggers
+  Tengine::Event.config = config[:event_queue]
 
   Mongoid.config.from_hash config[:db]
   Mongoid.config.option :persist_in_safe_mode, :default => true
