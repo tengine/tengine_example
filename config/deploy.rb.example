@@ -6,7 +6,7 @@ set  :daemon_user       , 'shyouhei' # 'tengined'
 set  :application       , 'tengine_example'
 set  :keep_releases     , 3
 set  :scm               , :git
-set  :repository        , 'git@github.com:shyouhei/tengine_example.git' # 'git://github.com/shyouhei/tengine_example.git'
+set  :repository        , 'git@github.com:tengine/tengine_example.git'
 set  :branch            , 'master'
 set  :git_shallow_clone , 1
 set  :scm_verbose       , true
