@@ -1,5 +1,3 @@
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-
 require 'capistrano_colors'
 require 'railsless-deploy'
 require 'bundler/capistrano'
