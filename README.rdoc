@@ -4,6 +4,4 @@ Tengine framework examples and deploy files.
 
 == Copyright
 
-Copyright (c) 2012 Nautilus Technologies.  See LICENSE.txt for
-further details.
-
+Copyright (c) 2012 Groovenauts, Inc.  See LICENSE.txt for further details.
