@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+require 'bundler/setup'
+
+require "tengine_resource_ec2"
+
+@__watcher__ = Tengine::Resource::Watcher.new(ARGV)
+@__watcher__.run(__FILE__)
+Signal.trap(:INT) { @__watcher__.shutdown }
