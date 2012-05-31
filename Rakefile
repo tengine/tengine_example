@@ -9,42 +9,21 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-begin
-  require 'jeweler'
-rescue LoadError
-  # nothing
-else
-  Jeweler::Tasks.new do |gem|
-    # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-    gem.name = "tengine_example"
-    gem.homepage = "http://github.com/shyouhei/tengine_example"
-    gem.license = "LGPL or MPL"
-    gem.summary = "Tengine framework examples and deployer"
-    gem.description = "Tengine framework examples and deployer"
-    gem.email = "shyouhei@ruby-lang.org"
-    gem.authors = ["Urabe, Shyouhei"]
-    # dependencies defined in Gemfile
-  end
-  Jeweler::RubygemsDotOrgTasks.new
-
-  require 'rspec/core'
-  require 'rspec/core/rake_task'
-  RSpec::Core::RakeTask.new(:spec) do |spec|
-    spec.pattern = FileList['spec/**/*_spec.rb']
-  end
-
-  RSpec::Core::RakeTask.new(:rcov) do |spec|
-    spec.pattern = 'spec/**/*_spec.rb'
-    spec.rcov = true
-  end
-
-  task :default => :spec
-
-  require 'yard'
-  YARD::Rake::YardocTask.new
-
-  Rake::Task[:console].clear_actions # Delete jeweler's "rake console"
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
+
+RSpec::Core::RakeTask.new(:rcov) do |spec|
+  spec.pattern = 'spec/**/*_spec.rb'
+  spec.rcov = true
+end
+
+task :default => :spec
+
+require 'yard'
+YARD::Rake::YardocTask.new
 
 task :console, [:config] do |c, argh|
   require 'bundler/setup'

@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+
+base_dir = File.expand_path(ARGV.first || '../tengine')
+
+tengine_version = "1.1.0.alpha1"
+
+gem_packages = %w[
+  tengine_support
+  tengine_event
+  tengine_core
+  tengine_resource
+  tengine_resource_ec2
+  tengine_job
+]
+
+gem_packages.each do |package|
+  cmd = [
+    "gem uninstall #{package} -a -I -x",
+    "gem install " << File.join(base_dir, package, "pkg", "#{package}-#{tengine_version}.gem")
+  ]
+  system(cmd.join(" && "))
+end
