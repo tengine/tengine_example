@@ -35,9 +35,11 @@ pkg
 #tmtags
 
 # For emacs:
-#*~
-#\#*
-#.\#*
+*~
+\#*
+.\#*
+.*~
+*.*~
 
 # For vim:
 #*.swp
@@ -47,3 +49,5 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+/.rvmrc
