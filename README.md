@@ -1,7 +1,7 @@
-= tengine_example
+# tengine_example
 
 Tengine framework examples and deploy files.
 
-== Copyright
+## Copyright
 
 Copyright (c) 2012 Groovenauts, Inc.  See LICENSE.txt for further details.
