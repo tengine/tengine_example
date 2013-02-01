@@ -6,10 +6,12 @@ Tengine framework examples and deploy files.
 
 より詳しい手順は [GettingStarted (イベントハンドリング編)](http://tengine.github.com/getting_started.html)をご覧ください。
 
-### インストール
+### 必須要件
 
-* MongoDBをインストール
-* RabbitMQをインストール
+* MongoDB 2.0以降
+* RabbitMQ 2.6.1以降
+
+### インストール
 
     $ git clone git://github.com/tengine/tengine_example.git
     $ cd tengine_example
