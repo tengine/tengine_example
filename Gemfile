@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-tengine_version = "1.1.0"
+tengine_version = "1.2.0"
 
 gem 'tengine_core'         , "~> #{tengine_version}"
 gem 'tengine_event'        , "~> #{tengine_version}"
