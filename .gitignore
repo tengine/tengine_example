@@ -51,3 +51,5 @@ pkg
 #*.rbc
 
 /.rvmrc
+
+*.log
