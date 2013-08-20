@@ -8,3 +8,4 @@ else
   sleep `expr 1 + $time`
 fi
 echo "`date` tengine_job_test $2 finish" >> $LOGFILE
+env | sort >> $LOGFILE

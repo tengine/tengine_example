@@ -8,6 +8,7 @@ gem 'tengine_job'          , "~> #{tengine_version}"
 gem 'tengine_resource'     , "~> #{tengine_version}"
 gem 'tengine_resource_ec2' , "~> #{tengine_version}"
 gem 'tengine_support'      , "~> #{tengine_version}"
+gem 'tengine_job_agent'    , "~> #{tengine_version}"
 
 group :development do
   gem 'bundler'
